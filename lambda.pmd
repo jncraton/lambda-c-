@@ -149,7 +149,7 @@ def show_cpp_results(src):
   with open('tmpsrc.cpp','w') as f:
     f.write(src)
     
-  compiler_output = run(['g++','-std=c++14','tmpsrc.cpp','-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
+  compiler_output = run(['g++','-std=c++11','tmpsrc.cpp','-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
   if (compiler_output.stdout or compiler_output.stderr):
     print(compiler_output.stderr.decode('utf8'))
     raise Exception
