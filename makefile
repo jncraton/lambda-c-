@@ -1,14 +1,11 @@
-SRC = lambda
+SRC = index
 
-all: test index.html
+all: test $(SRC).html
 
 $(SRC).html: $(SRC).pmd
 	pweave --format=md2html $(SRC).pmd
 	# Hack to remove padding from first line of code blocks
 	sed -i -e "s/padding: 2px 4px//g" $(SRC).html
-
-index.html: $(SRC).html
-	cp $(SRC).html index.html
 
 $(SRC).md: $(SRC).pmd
 	pweave --format=pandoc $(SRC).pmd
@@ -29,6 +26,6 @@ test: tangled.py
 	python3 -m doctest tangled-test.py
 
 clean:
-	rm -f $(SRC).pdf $(SRC).md tangled.py tangled-test.py $(SRC).html
+	rm -f $(SRC).pdf $(SRC).md tangled.py tangled-test.py $(SRC).html index.html
 	rm -rf figures
 	rm -rf __pycache__
