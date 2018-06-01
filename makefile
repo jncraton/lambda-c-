@@ -1,11 +1,14 @@
 SRC = lambda
 
-all: test $(SRC).html
+all: test index.html
 
 $(SRC).html: $(SRC).pmd
 	pweave --format=md2html $(SRC).pmd
 	# Hack to remove padding from first line of code blocks
 	sed -i -e "s/padding: 2px 4px//g" $(SRC).html
+
+index.html: $(SRC).html
+	cp $(SRC).html index.html
 
 $(SRC).md: $(SRC).pmd
 	pweave --format=pandoc $(SRC).pmd
