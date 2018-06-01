@@ -146,21 +146,39 @@ def show_cpp(src):
   print(open(src).read())
 
 def show_cpp_results(src):
-  compiler_output = run(['g++',src,'-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
+  with open('tmpsrc.cpp','w') as f:
+    f.write(src)
+    
+  compiler_output = run(['g++','tmpsrc.cpp','-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
   if (compiler_output.stderr):
     print(compiler_output.stderr.decode('utf8'))
     raise Exception
   output = run(['./tmpexec'], stdout=PIPE)
   print(output.stdout.decode('utf8'))
+  os.unlink('tmpsrc.cpp')
   os.unlink('tmpexec')
 ```
 
 ```python, echo=False, results="verbatim"
-show_cpp('examples/funcptr.cpp')
+cpp = r"""
+#include <stdio.h>
+
+int square(int a) {
+    return a * a;
+}
+ 
+int main() {
+    int (*square_ptr)(int) = square;
+ 
+    printf("%d\n", (*square_ptr)(10));
+}
+"""
+
+print(cpp)
 ```
 Output:
 ```python, echo=False, results="verbatim"
-show_cpp_results('examples/funcptr.cpp')
+show_cpp_results(cpp)
 ```
 
 > Then I would like for you to present comments that go beyond the text on
