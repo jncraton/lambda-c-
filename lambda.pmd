@@ -133,6 +133,36 @@ f = (lambda x: (lambda : x))(5)
 describe(f)
 ```
 
+The C language
+==============
+
+Before looking at the additional of lambda functions in C++11, let's take a look at functions as first class citizens in C/C++. Consider the following code:
+
+```python, echo=False, results="hidden"
+from subprocess import run, STDOUT, PIPE
+import os
+
+def show_cpp(src):
+  print(open(src).read())
+
+def show_cpp_results(src):
+  compiler_output = run(['g++',src,'-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
+  if (compiler_output.stderr):
+    print(compiler_output.stderr.decode('utf8'))
+    raise Exception
+  output = run(['./tmpexec'], stdout=PIPE)
+  print(output.stdout.decode('utf8'))
+  os.unlink('tmpexec')
+```
+
+```python, echo=False, results="verbatim"
+show_cpp('examples/funcptr.cpp')
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results('examples/funcptr.cpp')
+```
+
 > Then I would like for you to present comments that go beyond the text on
 the "How" and "Why" of the inclusion of Lambda-Expressions in C++ 11.
 (means you need to look elsewhere  )
