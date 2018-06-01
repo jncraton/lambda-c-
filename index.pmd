@@ -143,7 +143,7 @@ from subprocess import run, STDOUT, PIPE
 import os
 
 def show_cpp(src):
-  print(open(src).read())
+  print(open(src).read().strip())
 
 def show_cpp_results(src):
   with open('tmpsrc.cpp','w') as f:
