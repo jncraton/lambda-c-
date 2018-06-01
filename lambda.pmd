@@ -149,12 +149,19 @@ def show_cpp_results(src):
   with open('tmpsrc.cpp','w') as f:
     f.write(src)
     
-  compiler_output = run(['g++','tmpsrc.cpp','-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
-  if (compiler_output.stderr):
+  compiler_output = run(['g++','-std=c++14','tmpsrc.cpp','-o', 'tmpexec'], stdout=PIPE, stderr=PIPE)
+  if (compiler_output.stdout or compiler_output.stderr):
     print(compiler_output.stderr.decode('utf8'))
     raise Exception
   output = run(['./tmpexec'], stdout=PIPE)
+
   print(output.stdout.decode('utf8'))
+
+  if output.returncode != 0:
+    print("Return code: %d" % (output.returncode))
+    if output.returncode == -11:
+      print("Segmentation Fault")
+  
   os.unlink('tmpsrc.cpp')
   os.unlink('tmpexec')
 ```
@@ -180,6 +187,139 @@ Output:
 ```python, echo=False, results="verbatim"
 show_cpp_results(cpp)
 ```
+
+We can see that it is possible in older version of C and C++ it is possible to pass around function references as first class citizens. There is not a way to declare an anonymous function in standard C/C++ prior to C++11, but some compilers do provide this functionality.
+
+Let's explore the details of passing and using function pointers. First, consider this example of calling a function that accesses a global variable normally:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include <stdio.h>
+
+int x = 10;
+
+int add_x(int a) {
+    return a + x;
+}
+ 
+int main() {
+    printf("%d\n", add_x(10));
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+This works as expected. Now let's do the same thing using a function pointer:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include <stdio.h>
+
+int x = 10;
+
+int add_x(int a) {
+    return a + x;
+}
+ 
+int main() {
+    int (*add_x)(int) = add_x;
+ 
+    printf("%d\n", (*add_x)(10));
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+This fails with a segmentation fault. This is due to the fact that function pointers in C/C++ are raw memory locations to the machine code of a function. There is no concept of closure, and functions called this way are only able to access their own local scope.
+
+C++03 added the concept of a functor. This is basically a class that uses it's properties to implement a closure for a function. Consider the following example:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include "stdio.h"
+
+int main() {
+  struct add_x {
+    add_x(int x) : x(x) {}
+    int operator()(int a) const { return a + x; }
+    
+    int x;
+  };
+  
+  add_x add10(10);
+  printf("add10(5) = %d\n", add10(5));
+  printf("add10(25) = %d\n", add10(25));
+  add_x add20(10);
+  printf("add20(5) = %d\n", add20(5));
+  printf("add20(25) = %d\n", add20(25));
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+Now lets look at the syntax that was added in C++11 for lambda expressions as anonymous functors:
+
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include "stdio.h"
+
+int main() {
+  auto add_5 = [](int a) { return a + 5; };
+
+  printf("%d\n", add_5(10));
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+That's simple enough. Let's explore the syntax to capture a variable to the function's scope:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include <stdio.h>
+
+int main() {
+  int x = 10;
+
+  auto add_x = [x](int a) { return a + x; };
+
+  printf("%d\n", add_x(10));
+
+  x = 20;
+
+  printf("%d\n", add_x(10));  
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+We can see clearly that this allows us to bind variables to the function's closure as they were when the lambda expression was declared.
 
 > Then I would like for you to present comments that go beyond the text on
 the "How" and "Why" of the inclusion of Lambda-Expressions in C++ 11.
