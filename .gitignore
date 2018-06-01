@@ -1,0 +1,6 @@
+*.html
+*.pdf
+tangled.py
+tangled-test.py
+__pycache__
+figures

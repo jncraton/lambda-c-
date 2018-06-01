@@ -1,0 +1,138 @@
+% Lambda-Expressions
+% Jon Craton
+% Due: Sunday, June 17th 11:59 PM (D2L dropbox)
+
+> I would like you to produce a paper that first gives a general overview
+of the concept of Lambda- Expressions in the context of closure.
+
+https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+
+λ-calculus
+==========
+
+The relationship between computer programming and λ expressions dates back to the early days of computing. Alonzo Church discovered λ-calculus in the 1930s. This was more formally applied to programming languages in the 1950s, most popularly in the language Lisp.
+
+Lisp was defined in 1958. As a fucntional language, it has lambda expressions baked in very simply to the syntax as:
+
+    (lambda (square_me) (* square_me square_me))
+
+The above expression evaluates to a function. We can see the remnant of this syntax today in many languages, including perhaps the most widely executed language in the world, JavaScript:
+
+    function (square_me) { return square_me * square_me }
+
+or using more modern JavaScript:
+
+    square_me => square_me * square_me
+
+All of these expression evaluate to a first-class function. This can be assigned to a variable as:
+
+    square = square_me => square_me * square_me
+    square(9) // 81
+
+Or can simply be evaluated directly:
+
+    (square_me => square_me * square_me)(9) // 81
+
+This same concept exists in other languages such as Python:
+
+```python
+(lambda square_me: square_me * square_me)(9)
+```
+
+In broad terms, lambda expressions are just functions. λ-calculus uses the following syntax for defining a function:
+
+    x ↦ x²
+
+Whereas the syntax that we are all taught in school would look like this:
+
+    f(x) = x²
+
+These are equivalent functions, but λ-calculus does not assign a name ("f" in this case) to the function. It is defined *anonymously*. This distinction is the primary fundamental difference between the λ expressions in modern languages and other functions. λ functions are simply functions without names. Some languages also have other minor differences in implementation details, but this is the main one.
+
+Closure
+=======
+
+https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+
+One important thing to understand when considering functions as first class objects is the concept of closure. The concept of closure refers to the ability to persist local variable scope outside of function invocation.
+
+Consider the following Python example:
+
+```python
+try:
+  def inner():
+    return x
+  
+  def outer(x):
+    return inner()
+  
+  outer(5)
+except NameError as e:
+  print(e)
+```
+
+This fails because the function `inner` has no access to the variable `x`. It is not closed over `outer`'s environment. Consider the following modified example:
+
+```python
+def outer(x):
+  def inner():
+    return x
+  return inner()
+
+outer(5)
+```
+
+This works perfectly because `inner` is closed over `outer`'s environment. Note that closures keep access to their local scope even outside of function execution. Consider this example:
+
+```python
+def outer(x):
+  def inner():
+    return x
+  return inner
+
+f = outer(5) # This returns outer with x bound to 5
+
+def describe(f):
+  # We can print the closure content directly
+  print("x is saved in f's closure as %d" % f.__closure__[0].cell_contents)
+  
+  # We can also show this by evaluating f
+  print("f evaluates to %d" % f())
+
+describe(f)
+```
+
+Lambda functions and closure
+----------------------------
+
+We can combine the concepts of lambda expressions and closure to shorten this example:
+
+```python
+def g(x):
+  return lambda : x
+
+f = g(5)
+
+describe(f)
+```
+
+Or if we want to use two lambda functions:
+
+```python
+g = lambda x: (lambda : x)
+f = g(5)
+
+describe(f)
+```
+
+And finally if we want to call the outer lambda function anonymously just to create the closure:
+
+```python
+f = (lambda x: (lambda : x))(5)
+
+describe(f)
+```
+
+> Then I would like for you to present comments that go beyond the text on
+the "How" and "Why" of the inclusion of Lambda-Expressions in C++ 11.
+(means you need to look elsewhere  )
