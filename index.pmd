@@ -5,7 +5,7 @@
 > I would like you to produce a paper that first gives a general overview
 of the concept of Lambda- Expressions in the context of closure.
 
-https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+
 
 λ-calculus
 ==========
@@ -51,8 +51,6 @@ These are equivalent functions, but λ-calculus does not assign a name ("f" in t
 
 Closure
 =======
-
-https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
 
 One important thing to understand when considering functions as first class objects is the concept of closure. The concept of closure refers to the ability to persist local variable scope outside of function invocation.
 
@@ -132,6 +130,8 @@ f = (lambda x: (lambda : x))(5)
 
 describe(f)
 ```
+
+There is nothing particularly special about anonymous functions in relation to the concept of closure [3]. Many languages treat these functions the same regardless of whether they are named, but some languages also treat closure a little differently for anonymous functions.
 
 The C language
 ==============
@@ -321,6 +321,100 @@ show_cpp_results(cpp)
 
 We can see clearly that this allows us to bind variables to the function's closure as they were when the lambda expression was declared.
 
+We can also capture parameters by reference:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include <stdio.h>
+
+int main() {
+  int x = 10;
+
+  auto add_x = [&x](int a) { return a + x; };
+
+  printf("%d\n", add_x(10));
+
+  x = 20;
+
+  printf("%d\n", add_x(10));  
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+We can also simply capture the entire scope (using `=` to capture by value or `&` to capture by reference) and let the compiler figure out the rest:
+
+```python, echo=False, results="verbatim"
+cpp = r"""
+#include <stdio.h>
+
+int main() {
+  int x = 10;
+
+  auto add_x = [&](int a) { return a + x; };
+
+  printf("%d\n", add_x(10));
+
+  x = 20;
+
+  printf("%d\n", add_x(10));  
+}
+"""
+
+print(cpp)
+```
+Output:
+```python, echo=False, results="verbatim"
+show_cpp_results(cpp)
+```
+
+C++11 lambda expression implementation
+======================================
+
+C++ lambda expressions are quite literally implemented as anonymous functors. Functors and lambda expressions are both compiled down to unoptimized assembly as[6]:
+
+    push   rbp
+    mov    rbp,rsp
+    mov    QWORD PTR [rbp-0x8],rdi
+    mov    DWORD PTR [rbp-0xc],esi
+    // Do something
+    pop    rbp
+    ret
+
+While regular functions look more like this:
+
+    push   rbp
+    mov    rbp,rsp
+    mov    DWORD PTR [rbp-0x4],edi
+    // Do something
+    pop    rbp
+    ret
+
+The only real difference between these two is that the functor/lambda case include a reference to the object containing it's scope. This demonstrates that functors and lambda expression in C++ are nearly identical, and lambda expression just provide syntactic sugar to quickly create an anonymous functor.
+
+Desire for lambda expressions
+-----------------------------
+
+Why do we even want lambda expressions? I don't spend much time in C++ these days, but the language has a history of bolting on new features without breaking backwards compatibility. The original language grew out of a desire to add object-oriented features to C++, so it makes sense that it would also want to bolt on more functional features.
+
+Unfortunately, unlimited backwards compatibility accross multiple eras of programming paradigms can create a somewhat complex syntax both for human consumption and compilation. Functors helped to create more functional programming opportunities in C++, but the syntax was incredibly clunky and verbose, so lambda expressions were added to simplify functor usage.
+
 > Then I would like for you to present comments that go beyond the text on
 the "How" and "Why" of the inclusion of Lambda-Expressions in C++ 11.
 (means you need to look elsewhere  )
+
+References
+==========
+
+1. https://blog.feabhas.com/2014/03/demystifying-c-lambdas/
+2. https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+3. https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+4. https://en.wikipedia.org/wiki/Lambda_calculus
+5. https://en.wikipedia.org/wiki/Anonymous_function
+6. https://web.mst.edu/~nmjxv3/articles/lambdas.html
+
