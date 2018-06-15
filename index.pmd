@@ -12,7 +12,7 @@ of the concept of Lambda- Expressions in the context of closure.
 
 The relationship between computer programming and λ expressions dates back to the early days of computing. Alonzo Church discovered λ-calculus in the 1930s. This was more formally applied to programming languages in the 1950s, most popularly in the language Lisp.
 
-Lisp was defined in 1958. As a fucntional language, it has lambda expressions baked in very simply to the syntax as:
+Lisp was defined in 1958. As a fucntional language, it has lambda expressions included in the core syntax as:
 
     (lambda (square_me) (* square_me square_me))
 
@@ -47,7 +47,7 @@ Whereas the syntax that we are all taught in school would look like this:
 
     f(x) = x²
 
-These are equivalent functions, but λ-calculus does not assign a name ("f" in this case) to the function. It is defined *anonymously*. This distinction is the primary fundamental difference between the λ expressions in modern languages and other functions. λ functions are simply functions without names. Some languages also have other minor differences in implementation details, but this is the main one.
+These are equivalent functions, but λ-calculus does not assign a name ("f" in this case) to the function. It is defined *anonymously*. This distinction is the primary difference between the λ expressions in modern languages and other functions. λ functions are simply functions without names. Some languages also have other minor differences in implementation details, but this is the main one.
 
 Closure
 =======
