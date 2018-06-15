@@ -400,13 +400,14 @@ The only real difference between these two is that the functor/lambda case inclu
 Desire for lambda expressions
 -----------------------------
 
-Why do we even want lambda expressions? I don't spend much time in C++ these days, but the language has a history of bolting on new features without breaking backwards compatibility. The original language grew out of a desire to add object-oriented features to C++, so it makes sense that it would also want to bolt on more functional features.
+Why do we want lambda expressions? I don't spend much time in C++ these days, but the language has a history of bolting on new features without breaking backwards compatibility. The original language grew out of a desire to add object-oriented features to C, so it makes sense that it would also bolt on more functional features, particularly as functional programming has become more trendy.
 
 Unfortunately, unlimited backwards compatibility accross multiple eras of programming paradigms can create a somewhat complex syntax both for human consumption and compilation. Functors helped to create more functional programming opportunities in C++, but the syntax was incredibly clunky and verbose, so lambda expressions were added to simplify functor usage.
 
-> Then I would like for you to present comments that go beyond the text on
-the "How" and "Why" of the inclusion of Lambda-Expressions in C++ 11.
-(means you need to look elsewhere  )
+Conclusion
+==========
+
+Functional programming paradigms, and lambda expressions in particular, are welcome additions to C++. They allow the language to be even more expressive and flexible, allowing programmers to choose the tools that make the most sense for solving a given problem.
 
 References
 ==========
