@@ -242,7 +242,7 @@ show_cpp_results(cpp)
 
 This fails with a segmentation fault. This is due to the fact that function pointers in C/C++ are raw memory locations to the machine code of a function. There is no concept of closure, and functions called this way are only able to access their own local scope.
 
-C++03 added the concept of a functor. This is basically a class that uses it's properties to implement a closure for a function. Consider the following example:
+C++03 added the concept of a functor. This is basically a class that uses its properties to implement a closure for a function. Consider the following example:
 
 ```python, echo=False, results="verbatim"
 cpp = r"""
@@ -386,7 +386,7 @@ C++ lambda expressions are quite literally implemented as anonymous functors. Fu
     pop    rbp
     ret
 
-While regular functions look more like this:
+While regular functors look like this:
 
     push   rbp
     mov    rbp,rsp
@@ -395,7 +395,7 @@ While regular functions look more like this:
     pop    rbp
     ret
 
-The only real difference between these two is that the functor/lambda case include a reference to the object containing it's scope. This demonstrates that functors and lambda expression in C++ are nearly identical, and lambda expression just provide syntactic sugar to quickly create an anonymous functor.
+The only real difference between these two is that the functor/lambda case include a reference to the object containing its scope. This demonstrates that functors and lambda expression in C++ are nearly identical, and lambda expression just provide syntactic sugar to quickly create an anonymous functor.
 
 Desire for lambda expressions
 -----------------------------
