@@ -12,7 +12,7 @@ of the concept of Lambda- Expressions in the context of closure.
 
 The relationship between computer programming and λ expressions dates back to the early days of computing. Alonzo Church discovered λ-calculus in the 1930s. This was more formally applied to programming languages in the 1950s, most popularly in the language Lisp.
 
-Lisp was defined in 1958. As a fucntional language, it has lambda expressions included in the core syntax as:
+Lisp was defined in 1958. As a functional language, it has lambda expressions included in the core syntax as:
 
     (lambda (square_me) (* square_me square_me))
 
@@ -402,7 +402,7 @@ Desire for lambda expressions
 
 Why do we want lambda expressions? I don't spend much time in C++ these days, but the language has a history of bolting on new features without breaking backwards compatibility. The original language grew out of a desire to add object-oriented features to C, so it makes sense that it would also bolt on more functional features, particularly as functional programming has become more trendy.
 
-Unfortunately, unlimited backwards compatibility accross multiple eras of programming paradigms can create a somewhat complex syntax both for human consumption and compilation. Functors helped to create more functional programming opportunities in C++, but the syntax was incredibly clunky and verbose, so lambda expressions were added to simplify functor usage.
+Unfortunately, unlimited backwards compatibility across multiple eras of programming paradigms can create a somewhat complex syntax both for human consumption and compilation. Functors helped to create more functional programming opportunities in C++, but the syntax was incredibly clunky and verbose, so lambda expressions were added to simplify functor usage.
 
 Conclusion
 ==========
