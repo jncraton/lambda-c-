@@ -1,14 +1,11 @@
-% Lambda-Expressions
+% Lambda Expressions and Closures in C++11
 % Jon Craton
 % Due: Sunday, June 17th 11:59 PM (D2L dropbox)
 
-> I would like you to produce a paper that first gives a general overview
-of the concept of Lambda- Expressions in the context of closure.
+λ Expressions
+=============
 
-
-
-λ-calculus
-==========
+Before looking at Lambda expressions and closures in C++11, let's take a brief look at what these concepts mean in general.
 
 The relationship between computer programming and λ expressions dates back to the early days of computing. Alonzo Church discovered λ-calculus in the 1930s. This was more formally applied to programming languages in the 1950s, most popularly in the language Lisp.
 
@@ -39,7 +36,7 @@ This same concept exists in other languages such as Python:
 (lambda square_me: square_me * square_me)(9)
 ```
 
-In broad terms, lambda expressions are just functions. λ-calculus uses the following syntax for defining a function:
+In λ-calculus terms, λ expressions are just functions. λ-calculus uses the following syntax for defining a function:
 
     x ↦ x²
 
@@ -47,7 +44,7 @@ Whereas the syntax that we are all taught in school would look like this:
 
     f(x) = x²
 
-These are equivalent functions, but λ-calculus does not assign a name ("f" in this case) to the function. It is defined *anonymously*. This distinction is the primary difference between the λ expressions in modern languages and other functions. λ functions are simply functions without names. Some languages also have other minor differences in implementation details, but this is the main one.
+These are equivalent functions, but λ-calculus does not assign a name ("f" in this case) to the function. It is defined *anonymously*. This distinction is the primary difference between the λ expressions in modern languages and other functions. Anonymous λ functions are simply functions without names.
 
 Closure
 =======
@@ -65,6 +62,7 @@ try:
     return inner()
   
   outer(5)
+
 except NameError as e:
   print(e)
 ```
@@ -136,7 +134,7 @@ There is nothing particularly special about anonymous functions in relation to t
 The C language
 ==============
 
-Before looking at the additional of lambda functions in C++11, let's take a look at functions as first class citizens in C/C++. Consider the following code:
+Before looking at the addition of lambda functions in C++11, let's take a look at functions as first class citizens in C/C++. Consider the following code:
 
 ```python, echo=False, results="hidden"
 from subprocess import run, STDOUT, PIPE
@@ -188,9 +186,9 @@ Output:
 show_cpp_results(cpp)
 ```
 
-We can see that it is possible in older version of C and C++ it is possible to pass around function references as first class citizens. There is not a way to declare an anonymous function in standard C/C++ prior to C++11, but some compilers do provide this functionality.
+We can see that in older versions of C and C++ it is possible to pass around function pointers as first class citizens. There is not a way to declare an anonymous function in standard C/C++ prior to C++11, but some compilers do provide this functionality.
 
-Let's explore the details of passing and using function pointers. First, consider this example of calling a function that accesses a global variable normally:
+Let's explore the details of passing function pointers. First, consider this example of calling a function that accesses a global variable normally:
 
 ```python, echo=False, results="verbatim"
 cpp = r"""
@@ -242,6 +240,9 @@ show_cpp_results(cpp)
 
 This fails with a segmentation fault. This is due to the fact that function pointers in C/C++ are raw memory locations to the machine code of a function. There is no concept of closure, and functions called this way are only able to access their own local scope.
 
+C++ Functors
+============
+
 C++03 added the concept of a functor. This is basically a class that uses its properties to implement a closure for a function. Consider the following example:
 
 ```python, echo=False, results="verbatim"
@@ -272,7 +273,10 @@ Output:
 show_cpp_results(cpp)
 ```
 
-Now lets look at the syntax that was added in C++11 for lambda expressions as anonymous functors:
+C++ Lambda Expressions
+======================
+
+We've demonstrated how functors allow passing of functions and scope as first-class objects. Unfortunately this syntax is a bit verbose and clunky. Now lets look at the syntax that was added in C++11 for lambda expressions as anonymous functors:
 
 
 ```python, echo=False, results="verbatim"
@@ -373,8 +377,10 @@ Output:
 show_cpp_results(cpp)
 ```
 
-C++11 lambda expression implementation
-======================================
+C++ lambda expression provide a quick way to pass around function references and scope.
+
+Implementation Details
+----------------------
 
 C++ lambda expressions are quite literally implemented as anonymous functors. Functors and lambda expressions are both compiled down to unoptimized assembly as[6]:
 
@@ -386,7 +392,7 @@ C++ lambda expressions are quite literally implemented as anonymous functors. Fu
     pop    rbp
     ret
 
-While regular functors look like this:
+While regular functions look like this:
 
     push   rbp
     mov    rbp,rsp
@@ -395,14 +401,12 @@ While regular functors look like this:
     pop    rbp
     ret
 
-The only real difference between these two is that the functor/lambda case include a reference to the object containing its scope. This demonstrates that functors and lambda expression in C++ are nearly identical, and lambda expression just provide syntactic sugar to quickly create an anonymous functor.
+The only real difference between these two is that the functor/lambda case includes a reference to the object containing its scope. This demonstrates that functors and lambda expression in C++ are nearly identical, and lambda expression just provide syntactic sugar to quickly create an anonymous functor.
 
 Desire for lambda expressions
 -----------------------------
 
-Why do we want lambda expressions? I don't spend much time in C++ these days, but the language has a history of bolting on new features without breaking backwards compatibility. The original language grew out of a desire to add object-oriented features to C, so it makes sense that it would also bolt on more functional features, particularly as functional programming has become more trendy.
-
-Unfortunately, unlimited backwards compatibility across multiple eras of programming paradigms can create a somewhat complex syntax both for human consumption and compilation. Functors helped to create more functional programming opportunities in C++, but the syntax was incredibly clunky and verbose, so lambda expressions were added to simplify functor usage.
+Functional programming has seen a bit of a resurgence in recent years, with many programmers having exposure to Javascript, Python, Ruby, Elm, Kotlin, Rust, and other languages that provide functional programming tools. These are powerful tools, and it is only natural to try to find ways to incorporate these tools into traditionally procedural langauges, such as C++.
 
 Conclusion
 ==========
