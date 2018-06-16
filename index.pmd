@@ -407,7 +407,7 @@ The only real difference between these two is that the functor/lambda case inclu
 Desire for lambda expressions
 -----------------------------
 
-Functional programming has seen a bit of a resurgence in recent years, with many programmers having exposure to Javascript, Python, Ruby, Elm, Kotlin, Rust, and other languages that provide functional programming tools. These are powerful tools, and it is only natural to try to find ways to incorporate these tools into traditionally procedural langauges, such as C++.
+Functional programming has seen a bit of a resurgence in recent years, with many programmers having exposure to Javascript, Python, Ruby, Elm, Kotlin, Rust, and other languages that provide functional programming tools. These are powerful tools, and it is only natural to try to find ways to incorporate these tools into traditionally procedural languages, such as C++.
 
 Conclusion
 ==========
