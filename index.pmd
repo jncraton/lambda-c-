@@ -417,7 +417,7 @@ References
 ==========
 
 1. https://blog.feabhas.com/2014/03/demystifying-c-lambdas/
-2. https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
+2. Scott, Michael Lee. Programming language pragmatics. Morgan Kaufmann, 2000.
 3. https://stackoverflow.com/questions/220658/what-is-the-difference-between-a-closure-and-a-lambda
 4. https://en.wikipedia.org/wiki/Lambda_calculus
 5. https://en.wikipedia.org/wiki/Anonymous_function
