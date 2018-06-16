@@ -243,7 +243,7 @@ This fails with a segmentation fault. This is due to the fact that function poin
 C++ Functors
 ============
 
-C++03 added the concept of a functor. This is basically a class that uses its properties to implement a closure for a function. Consider the following example:
+C++03 added the concept of a functor. This is basically a class that uses its properties to implement a closure for a function[7]. Consider the following example:
 
 ```python, echo=False, results="verbatim"
 cpp = r"""
@@ -273,11 +273,12 @@ Output:
 show_cpp_results(cpp)
 ```
 
+Functors provide the ability to pass a reference to a function along with a bound scope. Allowing scope to be bound by a constructor makes functors much more flexible than basic function pointers.
+
 C++ Lambda Expressions
 ======================
 
 We've demonstrated how functors allow passing of functions and scope as first-class objects. Unfortunately this syntax is a bit verbose and clunky. Now lets look at the syntax that was added in C++11 for lambda expressions as anonymous functors:
-
 
 ```python, echo=False, results="verbatim"
 cpp = r"""
@@ -422,4 +423,4 @@ References
 4. https://en.wikipedia.org/wiki/Lambda_calculus
 5. https://en.wikipedia.org/wiki/Anonymous_function
 6. https://web.mst.edu/~nmjxv3/articles/lambdas.html
-
+7. https://stackoverflow.com/questions/356950/c-functors-and-their-uses#356993
